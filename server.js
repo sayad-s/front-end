@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const {MongoClient} = require("mongodb");
 const bodyParser = require("body-parser");
 const path = require('path');
@@ -8,14 +9,16 @@ const client = new MongoClient(url);
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cors());
 
 client.connect();
-let db = client.db("market");
+let db = client.db("sayaddb");
 let items = db.collection("products");
 
 app.get("/test", async (req,res) => {
   const products = await items.find().toArray();
   res.send(JSON.stringify(products));
+  // res.send(products);
 });
 
 app.get('/', (req, res) => {
@@ -28,4 +31,4 @@ app.post('/test', async (req, res) => {
   res.send("Recived and created");
 });
 
-app.listen(3001);
+app.listen(5021);
